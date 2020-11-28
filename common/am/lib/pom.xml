@@ -44,9 +44,18 @@ under the License.
       <version>${project.version}</version>
     </dependency>
 
+    <!-- Solution to make junit tests AND jupiter ones-->
+    <!-- https://stackoverflow.com/questions/62552652/run-both-junit-4-and-junit5-with-maven-surefire-plugin-2020 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.6.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -57,6 +66,39 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
       </plugin>
+      <!-- OVERRIVE maven surefire plugin in order to make junit tests AND jupiter ones-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        </plugin>
+
+      <!-- Pitest mutation testing -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.5.2</version>
+        <!--FIX configs for mutation coverage -->
+        <configuration>
+          <targetClasses>
+            <param>org.apache.syncope.common.lib.DeleteMePlease*</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.apache.syncope.common.lib.PitTest*</param>
+          </targetTests>
+        </configuration>
+        <!-- execution, qui inserire eventuali altri parametri -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
+
+
 </project>
