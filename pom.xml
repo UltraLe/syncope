@@ -552,6 +552,8 @@ under the License.
     <sonar.junit.reportPaths>${project.build.directory}/surefire-reports</sonar.junit.reportPaths>
     <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 
+    <!-- original was 11, using mine already installed-->
+    <!--<targetJdk>1.8.0-275</targetJdk> -->
     <targetJdk>11</targetJdk>
     <rootpom.basedir>${basedir}</rootpom.basedir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -2041,6 +2043,13 @@ under the License.
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+      <!-- Make jupiter and junit tests coesist -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.2</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
 
   </dependencyManagement>
@@ -2108,10 +2117,17 @@ under the License.
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
+
+            <!-- Added, or local junit test not working (lambda function not supported in source 7...) -->
+            <source>11</source>
+            <target>11</target>
+
             <release>${targetJdk}</release>
             <useIncrementalCompilation>false</useIncrementalCompilation>
+            <!--
             <showWarnings>true</showWarnings>
             <showDeprecation>true</showDeprecation>
+            -->
             <compilerArgument>-Xlint:unchecked</compilerArgument>
           </configuration>
         </plugin>
@@ -2134,10 +2150,14 @@ under the License.
           <version>3.2.0</version>
         </plugin>
 
+        <!--Skipping because of a bug found: https://issues.apache.org/jira/browse/MJAVADOC-620-->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.2.0</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
         </plugin>
 
         <plugin>
@@ -2412,6 +2432,8 @@ under the License.
         <artifactId>modernizer-maven-plugin</artifactId>
         <version>${modernizer-maven.version}</version>
         <configuration>
+          <!-- Skipping
+          <skip>true</skip> -->
           <javaVersion>${targetJdk}</javaVersion>
           <ignorePackages>
             <ignorePackage>org.apache.syncope.core.persistence.jpa.entity</ignorePackage>
