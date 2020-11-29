@@ -4,12 +4,9 @@ dist: bionic
 arch: amd64
 jdk:
   - openjdk11
-# SKipping entirely the automatic install phase done by travis
-install: true
 
-# Skip automatic git pull of all submodules
 git:
-  submodules: false
+  quiet: true
 
 addons:
   sonarcloud:
