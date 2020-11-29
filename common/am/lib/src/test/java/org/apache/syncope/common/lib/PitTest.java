@@ -9,7 +9,7 @@ public class PitTest {
     //mvn -pl .,common/am/lib -U -T 1C test -Dtest=org.apache.syncope.common.lib.*Test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false
 
     //ONLINE
-    //
+    // . . .
 
     @Test
     public void simpleTest(){
