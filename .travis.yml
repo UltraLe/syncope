@@ -18,4 +18,4 @@ addons:
 
 script:
   #- mvn clean -q -pl .,common/am/lib -U -T 1C -Dtest=org.apache.syncope.common.lib.*Test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=UltraLe_syncope -Dsonar.scm.disabled=true -X
-  - mvn clean
+  - mvn clean -pl .,common/am/lib -Dtest=org.apache.syncope.common.lib.*Test org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=UltraLe_syncope
