@@ -72,6 +72,4 @@ public final class BatchPayloadGenerator {
     private BatchPayloadGenerator() {
         // private constructor for static utility class
     }
-
-    public static
 }
