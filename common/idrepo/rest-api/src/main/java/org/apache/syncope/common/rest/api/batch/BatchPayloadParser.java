@@ -113,6 +113,7 @@ public final class BatchPayloadParser {
         Map<String, List<Object>> headers = new HashMap<>();
 
         boolean isHeader = true;
+        //TODO remove.. qui mi puzza
         for (Iterator<BatchPayloadLine> itor = bodyPart.iterator(); itor.hasNext() && isHeader;) {
             BatchPayloadLine currentLine = itor.next();
 

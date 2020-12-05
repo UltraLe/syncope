@@ -9,7 +9,7 @@ public class PitTest {
     //LOCALMENTE, solo un modulo
     //mvn -pl .,common/idrepo/rest-api -U -T 1C test -Dtest=org.apache.syncope.common.rest.api.batch.*Test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false
     //ONLINE
-    // . . .
+    //see travis
 
     @Test
     public void simpleTest(){
