@@ -1,4 +1,5 @@
-package org.apache.syncope.common.lib;
+package org.apache.syncope.common.rest.api.batch;
+
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,8 +7,7 @@ import org.junit.Test;
 public class PitTest {
 
     //LOCALMENTE, solo un modulo
-    //mvn -pl .,common/am/lib -U -T 1C test -Dtest=org.apache.syncope.common.lib.*Test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false
-
+    //mvn -pl .,common/idrepo/rest-api -U -T 1C test -Dtest=org.apache.syncope.common.rest.api.batch.*Test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false
     //ONLINE
     // . . .
 

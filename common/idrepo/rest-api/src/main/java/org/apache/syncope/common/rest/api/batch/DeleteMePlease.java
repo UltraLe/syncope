@@ -1,4 +1,4 @@
-package org.apache.syncope.common.lib;
+package org.apache.syncope.common.rest.api.batch;
 
 public class DeleteMePlease {
 

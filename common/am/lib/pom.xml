@@ -73,30 +73,6 @@ under the License.
         <version>3.0.0-M5</version>
         </plugin>
 
-      <!-- Pitest mutation testing -->
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <version>1.5.2</version>
-        <!--FIX configs for mutation coverage -->
-        <configuration>
-          <targetClasses>
-            <param>org.apache.syncope.common.lib.DeleteMePlease*</param>
-          </targetClasses>
-          <targetTests>
-            <param>org.apache.syncope.common.lib.PitTest*</param>
-          </targetTests>
-        </configuration>
-        <!-- execution, qui inserire eventuali altri parametri -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>mutationCoverage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
 

@@ -1,0 +1,9 @@
+package org.apache.syncope.common.rest.api.batch;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(value= Suite.class)
+@Suite.SuiteClasses(value={PitTest.class})
+public class BatchPayloadParserTestSuite {
+}
