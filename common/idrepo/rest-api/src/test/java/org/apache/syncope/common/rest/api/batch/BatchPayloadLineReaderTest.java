@@ -1,12 +1,9 @@
 package org.apache.syncope.common.rest.api.batch;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mock;
 
 import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayInputStream;
@@ -14,16 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+
 @RunWith(value= Parameterized.class)
 public class BatchPayloadLineReaderTest {
 
     private InputStream in;
     private MediaType mediaType;
-    private Random rnd;
-    private static boolean improvedTestSuite = false;
-
-    @Mock
-    String TODO;
 
     public BatchPayloadLineReaderTest(List<Object> parameters){
 
@@ -34,13 +27,8 @@ public class BatchPayloadLineReaderTest {
         this.mediaType = mediaType;
     }
 
-    @Before
-    public void initTests(){
-        rnd = new Random(12345678);
-    }
-
     @Parameterized.Parameters
-    public static Collection<List<Object>> getOtherParameters(){
+    public static Collection<List<Object>> getParameters(){
 
         List<Object> httpPayload = new ArrayList<>();
         List<Object> mediaTypes = new ArrayList<>();
@@ -75,7 +63,10 @@ public class BatchPayloadLineReaderTest {
         parameters.add(httpPayload);
 
 
-        return UtilTestClass.multidimensionalTestCases(parameters);
+        if(UtilTestClass.improved){
+            return UtilTestClass.multidimensionalTestCases(parameters);
+        }
+        return UtilTestClass.nonMultidimensionalTestCases(parameters);
     }
 
 
@@ -91,6 +82,18 @@ public class BatchPayloadLineReaderTest {
             Assert.assertTrue(line.getLineNumber() >= i++);
             Assert.assertTrue((line.toString().split("\n").length == 0) || (line.toString().split("\n").length == 1));
         }
+    }
 
+    @Test
+    public void testTest() throws IOException {
+
+        List<BatchResponseItem> lines=BatchPayloadParser.parse(
+                in,
+                mediaType,
+                new BatchResponseItem());
+
+        for(BatchResponseItem line: lines){
+            System.out.println(line.toString());
+        }
     }
 }
