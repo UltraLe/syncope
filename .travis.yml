@@ -23,6 +23,7 @@ env:
     - DBMS=H2
     - jaxrsContentType=application/json
     - TestCommand="mvn -U -T 1C clean -Dtest=org.apache.syncope.common.rest.api.batch.*Test -DfailIfNoTests=false test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true" org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=UltraLe_syncope
+
 before_install:
   - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh -O ~/install-jdk.sh && chmod +x ~/install-jdk.sh
 install: true
