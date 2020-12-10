@@ -83,17 +83,4 @@ public class BatchPayloadLineReaderTest {
             Assert.assertTrue((line.toString().split("\n").length == 0) || (line.toString().split("\n").length == 1));
         }
     }
-
-    @Test
-    public void testTest() throws IOException {
-
-        List<BatchResponseItem> lines=BatchPayloadParser.parse(
-                in,
-                mediaType,
-                new BatchResponseItem());
-
-        for(BatchResponseItem line: lines){
-            System.out.println(line.toString());
-        }
-    }
 }

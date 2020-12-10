@@ -1,13 +1,10 @@
 package org.apache.syncope.common.rest.api.batch;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.syncope.common.lib.to.GroupTO;
-import org.apache.syncope.common.lib.to.ProvisioningResult;
-import org.apache.syncope.common.lib.to.UserTO;
 import org.apache.syncope.common.rest.api.Preference;
 import org.apache.syncope.common.rest.api.RESTHeaders;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +12,6 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(value= Parameterized.class)
@@ -48,13 +43,12 @@ public class BatchPayloadParserTest {
         -stringa vuota;
         -richiesta non lecita di grandi dimensioni;
 
-
      */
 
     private static String BATCH_BOUNDARY = "batch_61bfef8d-0a00-41aa-b775-7b6efff37652";
 
     private static final String SAMPLE_BATCH_REQ_VALID =
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -75,7 +69,7 @@ public class BatchPayloadParserTest {
                                             "\r\n" +
                                             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><syncope21:group xmlns:syncope21=\"http://syncope.apache.org/2.1\">\n" +
                                             "</syncope21:group>\n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -86,15 +80,15 @@ public class BatchPayloadParserTest {
                                             "Prefer: return-no-content\n" +
                                             "\r\n" +
                                             "{\"@class\":\"org.apache.syncope.common.lib.patch.UserPatch\",\"key\":\"24eb15aebatch@syncope.apache.org\"}\n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
                                             "DELETE /groups/287ede7c-98eb-44e8-979d-8777fa077e12 HTTP/1.1 \n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652--\r\n";
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652--\n";
 
     private static final String SAMPLE_BATCH_RESP_VALID =
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -107,7 +101,7 @@ public class BatchPayloadParserTest {
                                             "X-Syncope-Key: d399ba84-12e3-43d0-99ba-8412e303d083\n" +
                                             "\r\n" +
                                             "{\"entity\":{\"@class\":\"org.apache.syncope.common.lib.to.UserTO\"}\n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -121,7 +115,7 @@ public class BatchPayloadParserTest {
                                             "\r\n" +
                                             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                                             "<syncope21:provisioningResult xmlns:syncope21=\"http://syncope.apache.org/2.1\"></syncope21:provisioningResult>\n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -131,7 +125,7 @@ public class BatchPayloadParserTest {
                                             "Preference-Applied: return-no-content\n" +
                                             "X-Syncope-Domain: Master\n" +
                                             "\r\n" +
-                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\r\n" +
+                                            "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
                                             "\r\n" +
@@ -143,6 +137,12 @@ public class BatchPayloadParserTest {
                                             "{\"entity\":{\"@class\":\"org.apache.syncope.common.lib.to.GroupTO\"}\n" +
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652--\n";
 
+    //Removing the first batch boundary making invalid request/response
+    private static final String SAMPLE_BATCH_REQ_INV = SAMPLE_BATCH_REQ_VALID.substring(10);
+    private static final String SAMPLE_BATCH_RESP_INV = SAMPLE_BATCH_RESP_VALID.substring(10);
+
+    private static int itemsNum;
+
     @Mock
     private static MediaType mockMediaType = Mockito.mock(MediaType.class);
 
@@ -152,6 +152,7 @@ public class BatchPayloadParserTest {
     private MediaType mediaType;
     private BatchItem batchItem;
     private String batchPayload;
+    private List<BatchItem> listBatchItems;
 
     //using demo Virtual Machine
     //TODO chiamare il server solo se si ha trovato un bug e si vuole fare un proof of work.
@@ -170,6 +171,8 @@ public class BatchPayloadParserTest {
         List<Object> mediaTypes = new ArrayList<>();
         List<Object> batchItemsType = new ArrayList<>();
 
+        itemsNum = 4;
+
         //test 1 and 2 shoud work fine
         batchItems.add(SAMPLE_BATCH_REQ_VALID);
         mediaTypes.add(mockMediaType);
@@ -177,7 +180,7 @@ public class BatchPayloadParserTest {
 
         batchItems.add(SAMPLE_BATCH_RESP_VALID);
         mediaTypes.add(mockMediaType);
-        batchItemsType.add(new BatchRequestItem());
+        batchItemsType.add(new BatchResponseItem());
 
         //test 3 and 4 should not work
         batchItems.add(SAMPLE_BATCH_REQ_VALID);
@@ -186,17 +189,16 @@ public class BatchPayloadParserTest {
 
         batchItems.add(SAMPLE_BATCH_RESP_VALID);
         mediaTypes.add(new MediaType());
-        batchItemsType.add(new BatchRequestItem());
-
+        batchItemsType.add(new BatchResponseItem());
 
         //test 5 and 6 should not work
-        batchItems.add(SAMPLE_BATCH_REQ_VALID);
+        batchItems.add(SAMPLE_BATCH_REQ_INV);
         mediaTypes.add(mockMediaType);
-        batchItemsType.add(new BatchResponseItem());
+        batchItemsType.add(new BatchRequestItem());
 
-        batchItems.add(SAMPLE_BATCH_RESP_VALID);
+        batchItems.add(SAMPLE_BATCH_RESP_INV);
         mediaTypes.add(mockMediaType);
-        batchItemsType.add(new BatchResponseItem());
+        batchItemsType.add(new BatchRequestItem());
 
 
         List<List<Object>> parameters = new ArrayList<>();
@@ -216,105 +218,50 @@ public class BatchPayloadParserTest {
         this.batchItem = (BatchItem)parameters.get(2);
     }
 
-    //TODO, usare i parametri del costruttore nei test, e aggiungere gli assert.
-
     @Test
-    public void parseBatchResponseTest() throws IOException {
+    public void parseBatchRequestResponseTest() throws IOException {
 
-        List<BatchResponseItem> lines =  BatchPayloadParser.parse(
-                new ByteArrayInputStream(SAMPLE_BATCH_RESP_VALID.getBytes()),
-                mockMediaType,
-                new BatchResponseItem());
+        try {
+            listBatchItems = BatchPayloadParser.parse(
+                    new ByteArrayInputStream(batchPayload.getBytes()),
+                    mediaType,
+                    (BatchRequestItem) batchItem);
+        }catch(ClassCastException e){
+            //If there is an exception as below, ignore it.
+            //It is generated by incompatible parameter product.
+            Assert.assertEquals("java.lang.ClassCastException", e.getClass().getCanonicalName());
+            return;
+        }catch(NullPointerException np){
+            if(Arrays.toString(np.getStackTrace()).contains("BatchPayloadParser.split") &&
+                    (mediaType.getParameters().get("boundary") == null)  ){
+                //ignore
+                return;
+            }
+        }
 
-        for(int i = 0; i < lines.size(); ++i) {
-            System.out.println("Response parsed:"+i+"\n");
-            System.out.println(lines.get(i));
+        int expected = itemsNum;
+        if(batchPayload.equals(SAMPLE_BATCH_REQ_INV) || batchPayload.equals(SAMPLE_BATCH_RESP_INV)){
+            expected--;
+        }
+
+        checkParsedBatchItems(expected);
+    }
+
+
+    private void checkParsedBatchItems(int expectedNum){
+
+        assertEquals(expectedNum, listBatchItems.size());
+
+        for(BatchItem b : listBatchItems){
+
+            Assert.assertNotNull(b.getHeaders());
+
+            Assert.assertNotNull(b.getContent());
+
         }
     }
 
-    @Test
-    public void parseBatchRequestTest() throws IOException {
-
-        List<BatchRequestItem> lines =  BatchPayloadParser.parse(
-                new ByteArrayInputStream(SAMPLE_BATCH_REQ_VALID.getBytes()),
-                mockMediaType,
-                new BatchRequestItem());
-
-        for(int i = 0; i < lines.size(); ++i) {
-            System.out.println("Request parsed:"+i+"\n");
-            System.out.println(lines.get(i));
-        }
-    }
-
-
-    private void checkParsedBatchItems(List<BatchItem> batchItems){
-        assertEquals(6, batchItems.size());
-
-        /*
-        assertEquals(Response.Status.CREATED.getStatusCode(), resItems.get(0).getStatus());
-        assertNotNull(resItems.get(0).getHeaders().get(HttpHeaders.LOCATION));
-        assertNotNull(resItems.get(0).getHeaders().get(HttpHeaders.ETAG));
-        assertNotNull(resItems.get(0).getHeaders().get(RESTHeaders.DOMAIN));
-        assertNotNull(resItems.get(0).getHeaders().get(RESTHeaders.RESOURCE_KEY));
-        assertEquals(RESTHeaders.APPLICATION_YAML, resItems.get(0).getHeaders().get(HttpHeaders.CONTENT_TYPE).get(0));
-        ProvisioningResult<UserTO> user = YAML_MAPPER.readValue(
-                resItems.get(0).getContent(), new TypeReference<ProvisioningResult<UserTO>>() {
-                });
-        assertNotNull(user.getEntity().getKey());
-
-        assertEquals(Response.Status.CREATED.getStatusCode(), resItems.get(1).getStatus());
-        assertNotNull(resItems.get(1).getHeaders().get(HttpHeaders.LOCATION));
-        assertNotNull(resItems.get(1).getHeaders().get(HttpHeaders.ETAG));
-        assertNotNull(resItems.get(1).getHeaders().get(RESTHeaders.DOMAIN));
-        assertNotNull(resItems.get(1).getHeaders().get(RESTHeaders.RESOURCE_KEY));
-        assertEquals(MediaType.APPLICATION_XML, resItems.get(1).getHeaders().get(HttpHeaders.CONTENT_TYPE).get(0));
-
-        ProvisioningResult<GroupTO> group = XML_MAPPER.readValue(
-                resItems.get(1).getContent(), new TypeReference<ProvisioningResult<GroupTO>>() {
-                });
-        assertNotNull(group.getEntity().getKey());
-
-        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), resItems.get(2).getStatus());
-        assertNotNull(resItems.get(2).getHeaders().get(RESTHeaders.DOMAIN));
-        assertEquals(
-                Preference.RETURN_NO_CONTENT.toString(),
-                resItems.get(2).getHeaders().get(RESTHeaders.PREFERENCE_APPLIED).get(0));
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), resItems.get(3).getStatus());
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), resItems.get(4).getStatus());
-        assertNotNull(resItems.get(4).getHeaders().get(RESTHeaders.DOMAIN));
-        assertNotNull(resItems.get(4).getHeaders().get(RESTHeaders.ERROR_CODE));
-        assertNotNull(resItems.get(4).getHeaders().get(RESTHeaders.ERROR_INFO));
-        assertEquals(MediaType.APPLICATION_JSON, resItems.get(4).getHeaders().get(HttpHeaders.CONTENT_TYPE).get(0));
-
-        assertEquals(Response.Status.OK.getStatusCode(), resItems.get(5).getStatus());
-        assertNotNull(resItems.get(5).getHeaders().get(RESTHeaders.DOMAIN));
-        assertEquals(MediaType.APPLICATION_JSON, resItems.get(5).getHeaders().get(HttpHeaders.CONTENT_TYPE).get(0));
-        group = OBJECT_MAPPER.readValue(
-                resItems.get(5).getContent(), new TypeReference<ProvisioningResult<GroupTO>>() {
-                });
-        assertNotNull(group);
-         */
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Test
+    //TODO, usare questo nei test migliorativi, mettendo generaazione randomica di batch item
     public void testTest() throws IOException {
         String boundary = "--batch_" + UUID.randomUUID().toString();
 
@@ -341,7 +288,6 @@ public class BatchPayloadParserTest {
         }
     }
 
-    //TODO, usare questo nei test migliorativi
     private static String requestBody(final String boundary) {
         List<BatchRequestItem> reqItems = new ArrayList<>();
 
