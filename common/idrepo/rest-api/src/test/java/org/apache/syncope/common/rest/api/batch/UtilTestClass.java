@@ -5,7 +5,9 @@ import java.util.List;
 
 public class UtilTestClass {
 
-    public static boolean improved = false;
+    public static boolean improved = true;
+    //using demo Virtual Machine for real server interaction
+    private static final String ADDRESS = "https://syncope-vm.apache.org/syncope/rest";
 
     public static List<List<Object>> multidimensionalTestCases(List<List<Object>> inputLists) {
         List<List<Object>> cartesianProducts = new ArrayList<>();

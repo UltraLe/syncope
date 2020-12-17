@@ -154,10 +154,6 @@ public class BatchPayloadParserTest {
     private String batchPayload;
     private List<BatchItem> listBatchItems;
 
-    //using demo Virtual Machine
-    //TODO chiamare il server solo se si ha trovato un bug e si vuole fare un proof of work.
-    private static final String ADDRESS = "https://syncope-vm.apache.org/syncope/rest";
-
     @Before
     public void initMock(){
         when(mockMediaType.getParameters()).thenReturn(map);
@@ -280,32 +276,9 @@ public class BatchPayloadParserTest {
 
 
 
+
     //TODO, usare questo nei test migliorativi, mettendo generaazione randomica di batch item
     //          se non si riesce ad aumentare la coverage
-    public void testTest() throws IOException {
-        String boundary = "--batch_" + UUID.randomUUID().toString();
-
-        WebClient request = WebClient.create(ADDRESS).path("batch").
-                header(HttpHeaders.AUTHORIZATION, "Bearer ").
-                type(RESTHeaders.multipartMixedWith(boundary.substring(2)));
-
-        Response response = request.post(requestBody(boundary));
-        //Response response = request.post(SAMPLE_BATCH_REQ_VALID);
-
-        String body = IOUtils.toString((InputStream) response.getEntity(), String.valueOf(StandardCharsets.UTF_8));
-
-        List<BatchResponseItem> lines =  BatchPayloadParser.parse(
-                new ByteArrayInputStream(body.getBytes()),
-                response.getMediaType(),
-                new BatchResponseItem());
-
-
-        for(int i = 0; i < lines.size(); ++i) {
-            System.out.println("Response parsed:"+i+"\n");
-            System.out.println(lines.get(i));
-        }
-    }
-
     private static String requestBody(final String boundary) {
         List<BatchRequestItem> reqItems = new ArrayList<>();
 
