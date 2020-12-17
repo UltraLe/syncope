@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class BatchPayloadTestImproved {
+public class BatchPayloadParsetTestImproved {
 
     @Mock
     private static MediaType mockMediaType = Mockito.mock(MediaType.class);

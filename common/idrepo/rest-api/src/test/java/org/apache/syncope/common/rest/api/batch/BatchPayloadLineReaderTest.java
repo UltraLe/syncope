@@ -77,10 +77,12 @@ public class BatchPayloadLineReaderTest {
         List<BatchPayloadLine> lines = reader.read();
 
         int i = 0;
+        int numLines;
         for(BatchPayloadLine line : lines){
             Assert.assertTrue(line.getLineNumber() > 0);
             Assert.assertTrue(line.getLineNumber() >= i++);
-            Assert.assertTrue((line.toString().split("\n").length == 0) || (line.toString().split("\n").length == 1));
+            numLines = line.toString().split("\n").length;
+            Assert.assertTrue(numLines == 0 || numLines == 1);
         }
     }
 }

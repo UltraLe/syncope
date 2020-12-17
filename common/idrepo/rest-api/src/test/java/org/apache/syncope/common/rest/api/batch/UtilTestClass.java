@@ -5,7 +5,7 @@ import java.util.List;
 
 public class UtilTestClass {
 
-    public static boolean improved = true;
+    public static boolean improved = false;
     //using demo Virtual Machine for real server interaction
     private static final String ADDRESS = "https://syncope-vm.apache.org/syncope/rest";
 
