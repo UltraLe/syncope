@@ -22,7 +22,7 @@ env:
     - MAVEN_OPTS="-Xmx4096M -Xss128M -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -noverify"
     - DBMS=H2
     - jaxrsContentType=application/json
-    - TestCommand="mvn -U -T 1C org.jacoco:jacoco-maven-plugin:prepare-agent clean install sonar:sonar -Dsonar.projectKey=UltraLe_syncope -Dtest=org.apache.syncope.common.rest.api.batch.BatchPayloadTestSuite -DfailIfNoTests=false test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true"
+    - TestCommand="mvn -U -T 1C org.jacoco:jacoco-maven-plugin:prepare-agent clean install -Dtest=org.apache.syncope.common.rest.api.batch.BatchPayloadTestSuite sonar:sonar -Dsonar.projectKey=UltraLe_syncope -DfailIfNoTests=false test -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true"
 
 before_install:
   - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh -O ~/install-jdk.sh && chmod +x ~/install-jdk.sh
