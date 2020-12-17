@@ -45,7 +45,7 @@ public class BatchPayloadParserTest {
 
      */
 
-    private static String BATCH_BOUNDARY = "batch_61bfef8d-0a00-41aa-b775-7b6efff37652";
+    public static final String BATCH_BOUNDARY = "batch_61bfef8d-0a00-41aa-b775-7b6efff37652";
 
     private static final String SAMPLE_BATCH_REQ_VALID =
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
@@ -261,7 +261,27 @@ public class BatchPayloadParserTest {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //TODO, usare questo nei test migliorativi, mettendo generaazione randomica di batch item
+    //          se non si riesce ad aumentare la coverage
     public void testTest() throws IOException {
         String boundary = "--batch_" + UUID.randomUUID().toString();
 
@@ -273,8 +293,6 @@ public class BatchPayloadParserTest {
         //Response response = request.post(SAMPLE_BATCH_REQ_VALID);
 
         String body = IOUtils.toString((InputStream) response.getEntity(), String.valueOf(StandardCharsets.UTF_8));
-        System.out.println("MEDIA TYPE:\n"+ response.getMediaType().getParameters().get("boundary"));
-        System.out.println("Batch response body:\n"+ body);
 
         List<BatchResponseItem> lines =  BatchPayloadParser.parse(
                 new ByteArrayInputStream(body.getBytes()),

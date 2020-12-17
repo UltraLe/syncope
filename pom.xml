@@ -2318,6 +2318,9 @@ under the License.
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
             <encoding>utf-8</encoding>
             <runOrder>alphabetical</runOrder>
+            <!-- Skkipping Integration tests for -->
+            <skip>true</skip>
+            <skipITs>true</skipITs>
           </configuration>
           <executions>
             <execution>
