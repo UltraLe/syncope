@@ -47,7 +47,7 @@ public class BatchPayloadParserTest {
 
     public static final String BATCH_BOUNDARY = "batch_61bfef8d-0a00-41aa-b775-7b6efff37652";
 
-    private static final String SAMPLE_BATCH_REQ_VALID =
+    public static final String SAMPLE_BATCH_REQ_VALID =
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
@@ -87,7 +87,7 @@ public class BatchPayloadParserTest {
                                             "DELETE /groups/287ede7c-98eb-44e8-979d-8777fa077e12 HTTP/1.1 \n" +
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652--\n";
 
-    private static final String SAMPLE_BATCH_RESP_VALID =
+    public static final String SAMPLE_BATCH_RESP_VALID =
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652\n" +
                                             "Content-Type: application/http\n" +
                                             "Content-Transfer-Encoding: binary\n" +
@@ -138,8 +138,8 @@ public class BatchPayloadParserTest {
                                             "--batch_61bfef8d-0a00-41aa-b775-7b6efff37652--\n";
 
     //Removing the first batch boundary making invalid request/response
-    private static final String SAMPLE_BATCH_REQ_INV = SAMPLE_BATCH_REQ_VALID.substring(10);
-    private static final String SAMPLE_BATCH_RESP_INV = SAMPLE_BATCH_RESP_VALID.substring(10);
+    public static final String SAMPLE_BATCH_REQ_INV = SAMPLE_BATCH_REQ_VALID.substring(10);
+    public static final String SAMPLE_BATCH_RESP_INV = SAMPLE_BATCH_RESP_VALID.substring(10);
 
     private static int itemsNum;
 
@@ -255,88 +255,5 @@ public class BatchPayloadParserTest {
             Assert.assertNotNull(b.getContent());
 
         }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO, usare questo nei test migliorativi, mettendo generaazione randomica di batch item
-    //          se non si riesce ad aumentare la coverage
-    private static String requestBody(final String boundary) {
-        List<BatchRequestItem> reqItems = new ArrayList<>();
-
-        BatchRequestItem createUser = new BatchRequestItem();
-        createUser.setMethod(HttpMethod.POST);
-        createUser.setRequestURI("/users");
-        createUser.setHeaders(new HashMap<>());
-        createUser.getHeaders().put(HttpHeaders.ACCEPT, List.of(RESTHeaders.APPLICATION_YAML));
-        createUser.getHeaders().put(HttpHeaders.CONTENT_TYPE, List.of(RESTHeaders.APPLICATION_YAML));
-        createUser.getHeaders().put(HttpHeaders.CONTENT_LENGTH, List.of(2));
-        createUser.setContent("ok");
-        reqItems.add(createUser);
-
-
-        BatchRequestItem createGroup = new BatchRequestItem();
-        createGroup.setMethod(HttpMethod.POST);
-        createGroup.setRequestURI("/groups");
-        createGroup.setHeaders(new HashMap<>());
-        createGroup.getHeaders().put(HttpHeaders.ACCEPT, List.of(MediaType.APPLICATION_XML));
-        createGroup.getHeaders().put(HttpHeaders.CONTENT_TYPE, List.of(MediaType.APPLICATION_XML));
-        createGroup.getHeaders().put(HttpHeaders.CONTENT_LENGTH, List.of(2));
-        createGroup.setContent("ok");
-        reqItems.add(createGroup);
-
-        BatchRequestItem updateUser = new BatchRequestItem();
-        updateUser.setMethod(HttpMethod.PATCH);
-        updateUser.setRequestURI("/users/" + "rossini");
-        updateUser.setHeaders(new HashMap<>());
-        updateUser.getHeaders().put(RESTHeaders.PREFER, List.of(Preference.RETURN_NO_CONTENT.toString()));
-        updateUser.getHeaders().put(HttpHeaders.ACCEPT, List.of(MediaType.APPLICATION_JSON));
-        updateUser.getHeaders().put(HttpHeaders.CONTENT_TYPE, List.of(MediaType.APPLICATION_JSON));
-        updateUser.getHeaders().put(HttpHeaders.CONTENT_LENGTH, List.of(2));
-        updateUser.setContent("updateUserPayload");
-        reqItems.add(updateUser);
-
-
-        // 4. attempt to invoke an unexisting endpoint
-        BatchRequestItem endpointNotFound = new BatchRequestItem();
-        endpointNotFound.setMethod(HttpMethod.PATCH);
-        endpointNotFound.setRequestURI("/missing");
-        reqItems.add(endpointNotFound);
-
-        // 5. attempt to delete an unexisting group
-        BatchRequestItem groupNotFound = new BatchRequestItem();
-        groupNotFound.setMethod(HttpMethod.DELETE);
-        groupNotFound.setRequestURI("/groups/" + UUID.randomUUID());
-        reqItems.add(groupNotFound);
-
-        // 6, delete the group created above, expect deleted group as JSON
-        BatchRequestItem deleteGroup = new BatchRequestItem();
-        deleteGroup.setMethod(HttpMethod.DELETE);
-        deleteGroup.setRequestURI("/groups/" + "pippo");
-        reqItems.add(deleteGroup);
-
-        String body = BatchPayloadGenerator.generate(reqItems, boundary);
-
-        System.out.println("REQUEST BODY:"+body);
-
-        return body;
     }
 }

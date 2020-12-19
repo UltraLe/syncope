@@ -62,22 +62,24 @@ public class BatchPayloadLineReaderTestImproved {
 
         BatchPayloadLineReader reader = new BatchPayloadLineReader(in, mediaType);
         List<BatchPayloadLine> lines = reader.read();
+        Assert.assertFalse(lines.isEmpty());
 
         in = new ByteArrayInputStream((bigString.concat("\n\n\n\n")).getBytes());
 
         reader = new BatchPayloadLineReader(in, mediaType);
         lines = reader.read();
+        Assert.assertFalse(lines.isEmpty());
 
         in = new ByteArrayInputStream((bigString.concat("\r\r\r\r\r\r\r")).getBytes());
 
         reader = new BatchPayloadLineReader(in, mediaType);
         lines = reader.read();
+        Assert.assertFalse(lines.isEmpty());
 
         in = new ByteArrayInputStream((bigString.concat("\r\n\r\n\r\n\n\r\r\n")).getBytes());
 
         reader = new BatchPayloadLineReader(in, mediaType);
         lines = reader.read();
-
         Assert.assertFalse(lines.isEmpty());
     }
 
