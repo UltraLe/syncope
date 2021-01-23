@@ -1,0 +1,38 @@
+--------------
+BOOKKEEPER   |
+--------------
+
+CLASSE 1
+-org.apache.bookkeeper.client.BookKeeperAdmin
+DI CUI METODI TESTATI
+-static String formatEnsemble(List<BookieId> ensemble, Set<BookieId> bookiesSrc,char marker);
+-public Collection<BookieId> getAvailableBookies();
+-public Iterable<LedgerEntry> readEntries(long ledgerId, long firstEntry, long lastEntry);
+
+CLASSE 2
+-org.apache.bookkeeper.client.LedgerHandle
+DI CUI METODI TESTATI
+-public long addEntry(byte[] data);
+-public long addEntry(byte[] data, int offset, int length);
+-public synchronized long getNumBookies();
+-public Enumeration<LedgerEntry> readEntries(long firstEntry, long lastEntry);
+-public LedgerEntry readLastEntry();
+
+ISTRUZIONI BUILD/TEST
+
+1. Build + Test: mvn clean verify -Dtest=BookkeeperAdminTestSuite,LedgerHandleTestSuite -DfailIfNoTests=false
+
+-----------
+SYNCOPE	  |
+-----------
+
+CLASSE 1
+-org.apache.syncope.common.rest.api.batch.BatchPayloadLineReader
+
+CLASSE 2
+-org.apache.syncope.common.rest.api.batch.BatchPayloadParser
+
+ISTRUZIONI BUILD/TEST
+
+1. Build senza eseguire test con: mvn -U -T 1C -P skipTests,all
+2. Eseguire i test con: mvn -pl .,common/idrepo/rest-api -U -T 1C verify -Dtest=org.apache.syncope.common.rest.api.batch.*Test* -Dinvoker.streamLogs=true -Dmodernizer.skip=true -Dianal.skip=true -Drat.skip=true -Dcheckstyle.skip=true -Dsass.skip=true -DfailIfNoTests=false
